@@ -3,7 +3,7 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   initializer();
 
-  auto *groupBox = new QGroupBox(tr("Targets"));
+  auto *groupBox = new QGroupBox(tr("Cele"));
   groupBox->setAlignment(Qt::AlignTop);
   auto *vbox = new QGridLayout;
   vbox->addWidget(combobox_programmer, 0, 0, Qt::AlignTop);
@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   groupBox->setLayout(vbox);
   layout->addWidget(groupBox, 0, 0);
 
-  auto *groupBox3 = new QGroupBox(tr("Actions"));
+  auto *groupBox3 = new QGroupBox(tr("Akcje"));
   groupBox3->setAlignment(Qt::AlignTop);
   auto *vbox3 = new QGridLayout;
   vbox3->addWidget(pin_check, 0, 0, Qt::AlignTop);
@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   groupBox3->setLayout(vbox3);
   layout->addWidget(groupBox3, 2, 0);
 
-  auto *groupBox4 = new QGroupBox(tr("Device Info"));
+  auto *groupBox4 = new QGroupBox(tr("Informacje o urządzeniu"));
   auto *vbox4 = new QGridLayout;
   vbox4->addWidget(device_name_label, 0, 0);
   vbox4->addWidget(device_name, 0, 1);
@@ -53,7 +53,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   groupBox4->setLayout(vbox4);
   layout->addWidget(groupBox4, 0, 1);
 
-  auto *groupBox5 = new QGroupBox(tr("Hex Viewer"));
+  auto *groupBox5 = new QGroupBox(tr("Przeglądarka Hex"));
   auto *vbox5 = new QVBoxLayout;
 
   hexTableView->setModel(&hexViewModel);
@@ -63,7 +63,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   groupBox5->setLayout(vbox5);
   layout->addWidget(groupBox5, 2, 1);
 
-  auto *groupBox6 = new QGroupBox(tr("Output"));
+  auto *groupBox6 = new QGroupBox(tr("Wyjście"));
   auto *vbox6 = new QVBoxLayout;
   vbox6->addWidget(status_view);
   vbox6->addStretch(1);
@@ -87,7 +87,7 @@ void MainWindow::initializer() {
   programmer_found = false;
 
   window = new QWidget;
-  window->setWindowTitle("minipro CLI not found!");
+  window->setWindowTitle(tr("Nie znaleziono minipro CLI!"));
   window->resize(1000, 600);
   window->setMinimumSize(800, 480);
 
@@ -96,36 +96,36 @@ void MainWindow::initializer() {
   combobox_programmer = new QComboBox();
   combobox_device = new QComboBox();
 
-  button_run_command = new QPushButton("Run Command");
-  button_write = new QPushButton("Write to Device");
-  button_read = new QPushButton("Read from Device");
-  button_update = new QPushButton("Update Firmware");
+  button_run_command = new QPushButton(tr("Uruchom polecenie"));
+  button_write = new QPushButton(tr("Zapisz do urządzenia"));
+  button_read = new QPushButton(tr("Odczytaj z urządzenia"));
+  button_update = new QPushButton(tr("Zaktualizuj oprogramowanie"));
 
-  no_id_error = new QCheckBox("Ignore ID Error");
-  skip_id = new QCheckBox("Skip ID Check");
-  no_size_error = new QCheckBox("Ignore Size Error");
-  skip_verify = new QCheckBox("Skip Verification");
-  pin_check = new QCheckBox("Pin Check");
-  blank_check = new QCheckBox("Blank Check");
-  erase_device = new QCheckBox("Erase Device");
-  hardware_check = new QCheckBox("Hardware Check");
+  no_id_error = new QCheckBox(tr("Ignoruj błąd ID"));
+  skip_id = new QCheckBox(tr("Pomiń sprawdzanie ID"));
+  no_size_error = new QCheckBox(tr("Ignoruj błąd rozmiaru"));
+  skip_verify = new QCheckBox(tr("Pomiń weryfikację"));
+  pin_check = new QCheckBox(tr("Sprawdzenie pinów"));
+  blank_check = new QCheckBox(tr("Sprawdzenie pustego"));
+  erase_device = new QCheckBox(tr("Wyczyść urządzenie"));
+  hardware_check = new QCheckBox(tr("Sprawdzenie sprzętu"));
 
-  device_name_label = new QLabel("Name");
+  device_name_label = new QLabel(tr("Nazwa"));
   device_name = new QLineEdit();
   device_name->setReadOnly(true);
-  device_memory_label = new QLabel("Memory");
+  device_memory_label = new QLabel(tr("Pamięć"));
   device_memory = new QLineEdit();
   device_memory->setReadOnly(true);
-  device_package_label = new QLabel("Package");
+  device_package_label = new QLabel(tr("Obudowa"));
   device_package = new QLineEdit();
   device_package->setReadOnly(true);
-  device_protocol_label = new QLabel("Protocol");
+  device_protocol_label = new QLabel(tr("Protokół"));
   device_protocol = new QLineEdit();
   device_protocol->setReadOnly(true);
-  device_readbuffer_label = new QLabel("Read Buffer");
+  device_readbuffer_label = new QLabel(tr("Bufor odczytu"));
   device_readbuffer = new QLineEdit();
   device_readbuffer->setReadOnly(true);
-  device_writebuffer_label = new QLabel("Write Buffer");
+  device_writebuffer_label = new QLabel(tr("Bufor zapisu"));
   device_writebuffer = new QLineEdit();
   device_writebuffer->setReadOnly(true);
 
@@ -149,7 +149,7 @@ void MainWindow::run_async_process(QStringList &process_arguments,
     process_arguments.append(each);
   }
 
-  status_view->appendPlainText("[Input]: minipro " + process_arguments_string);
+  status_view->appendPlainText(tr("[Wejście]: minipro ") + process_arguments_string);
   if (type == "stderr") {
     connect(async_process, SIGNAL(readyReadStandardError()), this, SLOT(async_process_err_output()));
   } else if (type == "stdout") {
@@ -160,7 +160,7 @@ void MainWindow::run_async_process(QStringList &process_arguments,
           this,
           SLOT(read_device_output(int,QProcess::ExitStatus)));
 
-  status_view->appendPlainText("[Output]: ");
+  status_view->appendPlainText(tr("[Wyjście]: "));
   status_view->ensureCursorVisible();
   async_process->start("minipro", process_arguments);
 }
@@ -198,14 +198,14 @@ QString MainWindow::run_process(QPlainTextEdit &target_plain_text_edit,
   for (auto const &each : process_arguments) {
     process_arguments_string += each + " ";
   }
-  target_plain_text_edit.appendPlainText("[Input]: minipro " + process_arguments_string);
+  target_plain_text_edit.appendPlainText(tr("[Wejście]: minipro ") + process_arguments_string);
   process->start("minipro", process_arguments);
 
   if (!process->waitForStarted()) {
-    output += "Start Error";
+    output += tr("Błąd uruchomienia");
   }
   if (!process->waitForFinished()) {
-    output += "Finished Error";
+    output += tr("Błąd zakończenia");
   }
   if (type == "stderr") {
     output += process->readAllStandardError();
@@ -213,7 +213,7 @@ QString MainWindow::run_process(QPlainTextEdit &target_plain_text_edit,
     if (QRegularExpressionMatch match = re.match(output); match.hasMatch()) {
       output = match.captured(1).trimmed();
     }
-    target_plain_text_edit.appendPlainText("[Output]: " + output.replace("\u001B[K", ""));
+    target_plain_text_edit.appendPlainText(tr("[Wyjście]: ") + output.replace("\u001B[K", ""));
   } else if (type == "stdout") {
     output += process->readAllStandardOutput();
     static QRegularExpression re(R"(Serial code:.*\n([\s\S]*))");
@@ -256,7 +256,7 @@ void MainWindow::check_for_programmer() {
       combobox_programmer->addItem(programmer);
       enable_buttons();
     } else {
-      combobox_programmer->setPlaceholderText("No programmer found");
+      combobox_programmer->setPlaceholderText(tr("Nie znaleziono programatora"));
       programmer_found = false;
       disable_buttons();
     }
@@ -354,7 +354,7 @@ void MainWindow::read_device_output(int code, QProcess::ExitStatus) {
 }
 
 void MainWindow::write_device() {
-  QString fileName = QFileDialog::getOpenFileName(this);
+  QString fileName = QFileDialog::getOpenFileName(this, tr("Otwórz plik"));
   if (fileName != "") {
     QStringList arguments;
     arguments << "-p" << device << "-w" << fileName;
@@ -363,7 +363,7 @@ void MainWindow::write_device() {
 }
 
 void MainWindow::update_firmware() {
-  QString fileName = QFileDialog::getOpenFileName(this);
+  QString fileName = QFileDialog::getOpenFileName(this, tr("Otwórz plik"));
   if (fileName != "") {
     QStringList arguments;
     arguments << "-p" << device << "-F" << fileName;
@@ -387,7 +387,7 @@ void MainWindow::build_formatted_hex_output() {
     format_hex_table_columns();
   }
   catch (const std::exception &e) {
-    status_view->appendPlainText("\n[Error]: " + static_cast<QString>(e.what()));
+    status_view->appendPlainText(tr("\n[Błąd]: ") + static_cast<QString>(e.what()));
   }
 }
 
